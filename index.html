@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Welcome to Foundation</title>
+
+  <!-- Included CSS Files -->
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  <link rel="stylesheet" href="stylesheets/jquery.caroosel.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+  <script src="javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+	<div class="row">
+		<div class="twelve columns">
+			<h2>Welcome to jquery.caroosel</h2>
+			<h3 class="subheader">A fancy carousel slider</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="eight columns">
+			<dl id="sososo" class="slider">
+				<dt>Erster Tab</dt>
+				<dd>
+					Inhalt zum ersten Tab
+					<div class="caroosel-caption">I am a caption</div>
+				</dd>
+				<dt>Second Tab</dt>
+				<dd>
+					<figure>
+						<img src="images/blaubeeren.jpg">
+						<figcaption>Was für wunderschöne Blaubeeren das sind&hellip;</figcaption>
+					</figure>
+				</dd>
+				<dt>Drittens</dt>
+				<dd>
+					<h4>Überschrift</h4>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Restatis igitur vos; Duo Reges: constructio interrete. Qui ita affectus, beatum esse numquam probabis; Sed ego in hoc resisto; <a href='http://loripsum.net/' target='_blank'>Cave putes quicquam esse verius.</a> Murenam te accusante defenderem. Negare non possum. Quid de Pythagora? </p>
+					<ul>
+						<li>Sin laboramus, quis est, qui alienae modum statuat industriae?</li>
+						<li>At tu eadem ista dic in iudicio aut, si coronam times, dic in senatu.</li>
+						<li>Nam illud vehementer repugnat, eundem beatum esse et multis malis oppressum.</li>
+						<li>Primum divisit ineleganter;</li>
+						<li>Ita multo sanguine profuso in laetitia et in victoria est mortuus.</li>
+					</ul>
+					<p>Quis istud, quaeso, nesciebat? <i>ALIO MODO.</i> Recte, inquit, intellegis. Quis negat? <mark>An hoc usque quaque, aliter in vita?</mark> </p>
+					<a href="#" class="medium button">Ein Button</a>
+				</dd>
+				<!--dt>Hey Cigs</dt>
+				<dd>
+					<img src="images/Hey-Cigs.jpg" alt="" />
+					<div class="caroosel-caption">A nice cartoon about the dangers of smoking</div>
+				</dd-->
+			</dl>
+		</div>
+		<div class="four columns">
+			<div class="panel rounded">
+				<h4>Caroosel</h4>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Included JS Files (Compressed) -->
+	<script src="javascripts/foundation.js"></script>
+	<script src="javascripts/jquery.caroosel.js"></script>
+	
+	<!-- Initialize JS Plugins -->
+	<script src="javascripts/app.js"></script>
+</body>
+</html>
