@@ -185,6 +185,14 @@ div.caroosel-caption {
 	width:100%;
 }
 
+div.caroosel.tabs-top div.caroosel-caption,
+div.caroosel.tabs-bottom div.caroosel-caption {
+	left:0;
+}
 div.caroosel.tabs-bottom div.caroosel-caption {
 	bottom:40px;
+}
+
+div.caroosel .caroosel-viewport ul > li {
+	background:#fafafa;
 }

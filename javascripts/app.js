@@ -17,7 +17,9 @@
     
     
     $('.slider').caroosel({
-		'tabs' : 'left'
+		'tabs' : 'left',
+		'animate' : 'slide',
+		'animationSpeed' : 300
 		
 	});
   });
