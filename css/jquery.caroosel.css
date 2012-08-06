@@ -156,8 +156,7 @@ div.caroosel.tabs-none div.caroosel-viewport ul.caroosel-content {
   margin: 0; }
   div.caroosel.tabs-none div.caroosel-viewport ul.caroosel-content > li {
     width: 100%;
-    margin: 0;
-    background: orange; }
+    margin: 0; }
 
 .caroosel-navlink {
   position: absolute;

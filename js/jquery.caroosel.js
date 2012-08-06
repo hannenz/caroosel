@@ -7,10 +7,6 @@
  * 
  * based upon: "A jQuery plugin boilerplate." by Jonathan Nicol @f6design
  * 
- * Todo:
- * - alternative to definition list markup (?)
- * - option: thumbnails as tabs
- * 
  */
 
 ;(function($) {
@@ -43,9 +39,8 @@
 			var slideWidth;
 			var slideHeight;
 			
-			
 			options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
-
+			
 			if (options['slideshow'] !== false){
 				switch (options['slideshow']){
 					case 'fast':
