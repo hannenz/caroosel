@@ -30,14 +30,6 @@
 				}
 			}
 			
-			var max_y = 0;
-			$(this).children('dd').each(function(i, el){
-				var h = $(el).outerHeight();
-				if (h > max_y){
-					max_y = h;
-				}
-			});
-			
 			content.appendTo(viewport);
 			caroosel.append(tabs).append(viewport);
 			
@@ -51,27 +43,12 @@
 			caroosel.addClass('tabs-'+options['tabs'])
 			
 			$(this).hide();
-			
 			caroosel.insertBefore($(this));
-			
-			slideWidth = viewport.width();
-			slideHeight = 0;
 
+			slideWidth = viewport.width();
+			
 			content.css('width', slides * slideWidth);
 			content.children('li').css('width', slideWidth);
-			//~ content.children('li').each(function(i, el){
-				//~ var h = $(el).outerHeight();
-				//~ if (h > slideHeight){
-					//~ slideHeight = h;
-				//~ }
-			//~ });
-			
-			caroosel.height(slideHeight);
-			
-			if (options['tabs'] == 'top' || options['tabs'] == 'bottom'){
-				max_y += 40;
-			}
-			caroosel.height(max_y);
 			
 			if (options['tabs'] == 'left' || options['tabs'] == 'right'){
 				tabs.children('li').css('height', (100 / slides) + '%');
@@ -86,7 +63,27 @@
 			if (parseInt(options['slideshow']) > 0){
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
 			}
-			
+
+			slideHeight = maxY();
+			caroosel.height(slideHeight);
+			content.children('li').height(slideHeight);
+			return;
+
+			function maxY(){
+				var max_y = 0;
+				$('ul.caroosel-content > li').each(function(i, el){
+					var h = $(el).outerHeight();
+					if (h > max_y){
+						max_y = h;
+					}
+				});
+				if (options['tabs'] == 'top' || options['tabs'] == 'bottom'){
+					max_y += 40;
+				}
+				console.log(max_y);
+				return max_y;
+			}
+
 			function slideshow(){
 				goToNext();
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
@@ -170,6 +167,7 @@
 					h = $(el).outerHeight();
 					max = (h > max) ? h : max;
 				});
+				console.log(max);
 				return max;
 			}
 			
