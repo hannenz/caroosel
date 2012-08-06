@@ -1,0 +1,205 @@
+/*
+ * File: jquery.caroosel.css
+ * @package: jquery.caroosel.js
+ * @author: <j.braun@agentur-halma.de>
+ * 
+ * CSS stylesheet for jauqry caroosel plugin
+ *
+ * <div class="caroosel tabs-xxx">
+ * 		<ul class=caroosel-tabs">
+ * 			<li>...</li>
+ * 		</ul>
+ * 		<div class="caroosel-vioewport">
+ * 			<ul class="caroosel-content">
+ * 				<li>...</li>
+ * 			</ul>
+ *		</div>
+ * </div>
+ */
+
+@mixin triangle($pos:right,$color:blue, $sizex:5px, $sizey:5px) {
+	content:'';
+	width:0;
+	height:0;
+	line-height:0;
+	position:absolute;
+	
+	
+	@if $pos == right {
+		border-top:$sizey solid transparent;
+		border-bottom:$sizey solid transparent;
+		border-left:$sizex solid $color;
+		border-right:0;
+		right:-$sizex;
+		top:42%;
+	}
+	@if $pos == left {
+		border-top:$sizey solid transparent;
+		border-bottom:$sizey solid transparent;
+		border-right:$sizex solid $color;
+		border-left:0;
+		left:-$sizex;
+		top:42%;
+	}
+	@if $pos == bottom {
+		border-top:$sizey solid $color;
+		border-bottom:0;
+		border-right:$sizex solid transparent;
+		border-left:$sizex solid transparent;;
+		bottom:-$sizey;
+		left:42%;
+	}
+	@if $pos == top {
+		border-bottom:$sizey solid $color;
+		border-top:0;
+		border-right:$sizex solid transparent;
+		border-left:$sizex solid transparent;;
+		top:-$sizey;
+		left:42%;
+	}
+	
+}
+
+div.caroosel > * {
+	box-sizing:border-box;
+}
+
+div.caroosel {
+	width:100%;
+	overflow:hidden;
+	background:#fafafa;
+	position:relative;
+	height:auto;
+	
+	ul.caroosel-tabs {
+		list-style-type:none;
+		margin:0;
+		padding:0;
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:1;
+		
+		li {
+			list-style-type:none;
+			margin:0;
+			padding:1em;
+			background:rgb(0, 0, 0);
+			background:rgba(0, 0, 0, 0.6);
+			color:#fff;
+			cursor:pointer;
+			position:relative;
+			border-top:1px solid #aaa;
+			font-size:11px;
+		}
+		li.caroosel-active {
+			background:rgb(43,166,203);
+			background:rgba(43,166,203,0.98);
+			border-top:1px solid rgb(43, 166, 203);
+			border-top:1px solid rgba(43, 166, 203, 1.0);
+		}
+	}
+	
+	div.caroosel-viewport {
+		width:100%;
+		float:right;
+		position:relative;
+		z-index:0;
+		
+		ul.caroosel-content {
+
+			overflow:hidden;
+			position:absolute;
+			left:0;
+			top:0;
+			
+			> li {
+				list-style-type:none;
+				margin:0;
+				padding:10px;
+				float:left;
+				position:relative;
+				
+				div.caroosel-caption {
+					background:rgba(0, 0, 0, 0.5);
+					color:#fff;
+					padding:10px;
+					position:absolute;
+					bottom:0;
+					left:0;
+					width:100%;
+				}
+				
+			}
+		}
+	}
+}
+
+
+div.caroosel.tabs-left {
+	ul.caroosel-tabs {
+		left:0;
+		
+		li {
+			width:100%;
+		}
+		li.caroosel-active {
+			&:after {
+				@include triangle(right,rgb(43,166,203),5px,5px);
+			}
+		}
+	}
+}
+
+div.caroosel.tabs-right {
+	ul.caroosel-tabs {
+		right:0;
+		left:auto;
+
+		li {
+			width:100%;
+		}
+		li.caroosel-active {
+			&:after {
+				@include triangle(left,rgb(43,166,203));
+			}
+		}
+		
+	}
+}
+
+div.caroosel.tabs-top {
+	ul.caroosel-tabs {
+		position:absolute;
+		left:0;
+		top:0;
+		width:100%;
+		li {
+			float:left;
+		}
+		li.caroosel-active{
+			&:after {
+				@include triangle(bottom, rgb(43, 166, 203));
+			}
+		}
+	}
+}
+
+div.caroosel.tabs-bottom {
+	ul.caroosel-tabs {
+		position:absolute;
+		bottom:0px;
+		top:auto;
+		width:100%;
+		li {
+			float:left;
+		}
+		li.caroosel-active {
+			&:after {
+				@include triangle(top, rgb(43, 166, 203));
+			}
+		}
+	}
+}
+
+

@@ -15,13 +15,40 @@
     // $('.block-grid.four-up>li:nth-child(4n+1)').css({clear: 'left'});
     // $('.block-grid.five-up>li:nth-child(5n+1)').css({clear: 'left'});
     
-    
-    $('.slider').caroosel({
-		'tabs' : 'left',
-		'animate' : 'slide',
-		'animationSpeed' : 300
+
+	$('form input[type=submit]').bind('click', function(e){
+		e.preventDefault();
 		
+		options  = {
+			'tabs' : $('#tabs').val(),
+			'animate' : $('#animate').val(),
+			'animationSpeed' : parseInt($('#animation-speed').val()),
+			'tabWidth' : parseInt($('#tab-width').val()),
+			'tabHeight' : parseInt($('#tab-height').val())
+		};
+		console.log(options);
+		$('.slider').caroosel('destroy');
+		$('.slider').caroosel(options);
+		
+		
+		return false;
 	});
+	
+	$('.slider').caroosel();
+	
+	$('#destroyer').bind('click', function(e){
+		e.preventDefault();
+		$('.slider').caroosel('destroy');
+	});
+	
+
+    
+    //~ $('.slider').caroosel({
+		//~ 'tabs' : 'left',
+		//~ 'animate' : 'slide',
+		//~ 'animationSpeed' : 300
+		//~ 
+	//~ });
   });
   
 })(jQuery);

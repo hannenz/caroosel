@@ -1,7 +1,15 @@
  ;(function($){
 	jQuery.fn.caroosel = function(arg){
+
+		if (typeof(arg) == 'string' && arg == 'destroy'){
+			return this.each(function(){
+				$(this).prev('.caroosel').remove();
+				$(this).show();
+			});
+		}
 		
 		var options = $.extend({}, $.fn.caroosel.defaults, arg);
+		options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
 		
 		return this.each(function(){
 			
@@ -46,15 +54,45 @@
 			caroosel.insertBefore($(this));
 
 			slideWidth = viewport.width();
+			if (options['horizontal']){
+				slideWidth -= options['tabWidth'];
+			}
 			
-			content.css('width', slides * slideWidth);
+			content.css('width', slides * (slideWidth + options['tabWidth']));
 			content.children('li').css('width', slideWidth);
 			
-			if (options['tabs'] == 'left' || options['tabs'] == 'right'){
-				tabs.children('li').css('height', (100 / slides) + '%');
+			if (options['horizontal']){
+				tabs.css({ 'height' : '100%' });
+				tabs.children('li').css({
+					'height' : (100 / slides) + '%',
+					'width' : options['tabWidth']
+				});
+				if (options['tabs'] == 'left'){
+					content.children('li').css({
+						'margin-left' : options['tabWidth']
+					});
+				}
+				else {
+					content.children('li').css({
+						'margin-right' : options['tabWidth']
+					});
+				}
 			}
 			else {
-				tabs.children('li').css('width', (100 / slides) + '%');
+				tabs.children('li').css({
+					'width' : (100 / slides) + '%',
+					'height' : options['tabHeight']
+				});
+				if (options['tabs'] == 'top'){
+					content.children('li').css({
+						'margin-top' : options['tabHeight'],
+					});
+				}
+				else {
+					content.children('li').css({
+						'margin-bottom' : options['tabHeight']
+					});
+				}
 			}
 						
 			tabs.children('li').bind('click', onTabClicked).first().addClass('caroosel-active');
@@ -65,7 +103,11 @@
 			}
 
 			slideHeight = maxY();
-			caroosel.height(slideHeight);
+			var sh = slideHeight;
+			if (!options['horizontal']){
+				sh += options['tabHeight'];
+			}
+			caroosel.height(sh);
 			content.children('li').height(slideHeight);
 			return;
 
@@ -78,9 +120,8 @@
 					}
 				});
 				if (options['tabs'] == 'top' || options['tabs'] == 'bottom'){
-					max_y += 40;
+					//~ max_y += options['tabHeight'];
 				}
-				console.log(max_y);
 				return max_y;
 			}
 
@@ -113,9 +154,10 @@
 					var listItems = tabs.children('li');
 					listItems.removeClass('caroosel-active');
 					$(listItems.get(n)).addClass('caroosel-active'); //.addClass('caroosel-active');
-	
 					
-					var newLeft = n * slideWidth * -1;
+					var w = getActiveSlide().outerWidth(true);
+					
+					var newLeft = n * w * -1;
 					switch (options['animate']){
 						case 'slide':
 							content.animate({
@@ -123,7 +165,7 @@
 							}, options['animationSpeed']);
 							break;
 						case 'fade':
-							content.fadeOut(function(){
+							content.fadeOut(options['animationSpeed'], function(){
 								content.css('left', newLeft);
 								content.fadeIn();
 							});
@@ -167,7 +209,6 @@
 					h = $(el).outerHeight();
 					max = (h > max) ? h : max;
 				});
-				console.log(max);
 				return max;
 			}
 			
@@ -189,6 +230,8 @@
 	 */
 	$.fn.caroosel.defaults = {
 		'tabs' : 'left',
+		'tabWidth' : 160,
+		'tabHeight' : 40,
 		'animate' : 'slide',
 		'animationSpeed' : 400,
 		'slideshow' : false
