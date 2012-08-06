@@ -222,3 +222,23 @@ div.caroosel.tabs-none {
 		}
 	}
 }
+
+.caroosel-navlink {
+	position:absolute;
+	top:40%;
+	width:32px;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	overflow:hidden;
+	background:#fff;
+	background:rgba(255, 255, 255, 0.7);
+}
+
+.caroosel-navlink#caroosel-prev {
+	left:0;
+}
+
+.caroosel-navlink#caroosel-next {
+	right:0;
+}

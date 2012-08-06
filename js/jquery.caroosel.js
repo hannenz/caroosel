@@ -37,9 +37,12 @@
 			var tabs = $('<ul class="caroosel-tabs" />');
 			var viewport = $('<div class="caroosel-viewport"></div>');
 			var content = $('<ul class="caroosel-content" />');
+			var prev = $('<a href="#" class="caroosel-navlink" id="caroosel-prev" />');
+			var next = $('<a href="#" class="caroosel-navlink" id="caroosel-next" />');
 			var slides = $el.find('dd').length;
 			var slideWidth;
 			var slideHeight;
+			
 			
 			options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
 
@@ -118,6 +121,7 @@
 				}
 			}
 			tabs.children('li').bind('click', onTabClicked).first().addClass('caroosel-active');
+			content.children('li').first().addClass('caroosel-active');
 			
 			if (parseInt(options['slideshow']) > 0){
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
@@ -130,6 +134,31 @@
 			}
 			caroosel.height(sh);
 			content.children('li').height(slideHeight);
+
+			if (options['navlinks'] === true){
+				prev.html(options['prev']);
+				next.html(options['next']);
+				viewport.append(prev).append(next);
+				
+				prev.css({
+					'top' : (content.outerHeight(true) - prev.outerHeight(true)) / 2
+				});
+				next.css({
+					'top' : (content.outerHeight(true) - next.outerHeight(true)) / 2
+				});
+				
+				prev.bind('click', function(e){
+					e.preventDefault();
+					goToPrev();
+				});
+				next.bind('click', function(e){
+					e.preventDefault();
+					goToNext();
+				});
+				
+			}
+
+
 			return;
 
 			function maxY(){
@@ -190,15 +219,24 @@
 					function setActive(){
 						listItems.removeClass('caroosel-active');
 						$(listItems.get(n)).addClass('caroosel-active');
+						content.children('li').removeClass('caroosel-active');
+						$(content.children('li').get(n)).addClass('caroosel-active');
 						hook('afterSlide');
 					}
 				}
 			}
 			
 			function goToNext(){
-				var current = tabs.find('li.caroosel-active').index();
+				var current = content.find('li.caroosel-active').index();
 				if (++current == slides){
 					current = 0;
+				}
+				goTo(current);
+			}
+			function goToPrev(){
+				var current = content.find('li.caroosel-active').index();
+				if (current-- == 0){
+					current = slides - 1;
 				}
 				goTo(current);
 			}
@@ -264,16 +302,12 @@
 			var args = Array.prototype.slice.call(arguments, 1);
 			var returnVal;
 			this.each(function() {
-				// Check that the element has a plugin instance, and that
-				// the requested public method exists.
 				if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
-					// Call the method of the Plugin instance, and Pass it
-					// the supplied arguments.
 					returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
 				}
-				else {
-					throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
-				}
+				//~ else {
+					//~ throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
+				//~ }
 			});
 			
 			return (returnVal !== undefined) ? returnVal : this;
@@ -295,6 +329,10 @@
 		'animate' : 'slide',
 		'animationSpeed' : 400,
 		'slideshow' : false,
+		'navlinks' : false,
+		'prev' : '<<',
+		'next' : '>>',
+		
 		onInit: function() {},
 		onDestroy: function() {},
 		beforeSlide : function(n) {},

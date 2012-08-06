@@ -34,7 +34,8 @@
 		});
 	
 		$('.slider').caroosel({
-			'tabs' : 'left'
+			'tabs' : 'none',
+			'navlinks' : true
 		});
 		
 		$('#destroyer').bind('click', function(e){
