@@ -129,8 +129,10 @@
 
 			slideHeight = maxY();
 			var sh = slideHeight;
-			if (!options['horizontal'] && !options['tabs'] == 'none'){
-				sh += options['tabHeight'];
+			if (!options['horizontal']){
+				if (options['tabs'] !== 'none'){
+					sh += options['tabHeight'];
+				}
 			}
 			caroosel.height(sh);
 			content.children('li').height(slideHeight);
@@ -155,6 +157,12 @@
 					e.preventDefault();
 					goToNext();
 				});
+				if (options['tabs'] == 'left'){
+					prev.css('left', options['tabWidth']);
+				}
+				if (options['tabs'] == 'right'){
+					next.css('right', options['tabWidth']);
+				}
 				
 			}
 
@@ -329,7 +337,7 @@
 		'animate' : 'slide',
 		'animationSpeed' : 400,
 		'slideshow' : false,
-		'navlinks' : false,
+		'navlinks' : true,
 		'prev' : '<<',
 		'next' : '>>',
 		

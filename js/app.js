@@ -34,7 +34,7 @@
 		});
 	
 		$('.slider').caroosel({
-			'tabs' : 'none',
+			'tabs' : 'top',
 			'navlinks' : true
 		});
 		
