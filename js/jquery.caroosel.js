@@ -1,27 +1,48 @@
- ;(function($){
-	jQuery.fn.caroosel = function(arg){
+/**
+ * jquery.caroosel.js
+ * 
+ * jauery carousel plugin (with tabs);
+ * 
+ * @author: <j.braun@agentur-halma.de>
+ * 
+ * based upon: "A jQuery plugin boilerplate." by Jonathan Nicol @f6design
+ * 
+ * Todo:
+ * - alternative to definition list markup (?)
+ * - option: thumbnails as tabs
+ * 
+ */
 
-		if (typeof(arg) == 'string' && arg == 'destroy'){
-			return this.each(function(){
-				$(this).prev('.caroosel').remove();
-				$(this).show();
-			});
+;(function($) {
+	var pluginName = 'caroosel';
+ 	/**
+	 * Plugin object constructor.
+	 * Implements the Revealing Module Pattern.
+	 */
+	function Plugin(element, options) {
+		var el = element;
+		var $el = $(element);
+		var timeOut;	// Reference to timeout handle
+ 
+		options = $.extend({}, $.fn[pluginName].defaults, options);
+ 
+		function init() {
+			_caroosel();
+			hook('onInit');
 		}
 		
-		var options = $.extend({}, $.fn.caroosel.defaults, arg);
-		options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
-		
-		return this.each(function(){
-			
+		function _caroosel(){
+
 			var caroosel = $('<div class="caroosel" />');
 			var tabs = $('<ul class="caroosel-tabs" />');
 			var viewport = $('<div class="caroosel-viewport"></div>');
 			var content = $('<ul class="caroosel-content" />');
-			var slides = $(this).find('dt').length;
+			var slides = $el.find('dd').length;
 			var slideWidth;
 			var slideHeight;
-			var timeOut;	// Reference to timeout handle
 			
+			options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
+
 			if (options['slideshow'] !== false){
 				switch (options['slideshow']){
 					case 'fast':
@@ -41,62 +62,62 @@
 			content.appendTo(viewport);
 			caroosel.append(tabs).append(viewport);
 			
-			$(this).children('dt').each(function(i, el){
-				tabs.append($('<li>' + $(el).html() + '</li>'));
+			$el.children('dt').each(function(i, element){
+				tabs.append($('<li>' + $(element).html() + '</li>'));
 			});
-			$(this).children('dd').each(function(i, el){
-				content.append($('<li>' + $(el).html() + '</li>'));
+			$el.children('dd').each(function(i, element){
+				content.append($('<li>' + $(element).html() + '</li>'));
 			});
-			
+
 			caroosel.addClass('tabs-'+options['tabs'])
 			
-			$(this).hide();
-			caroosel.insertBefore($(this));
+			$el.hide();
+			caroosel.insertBefore($el);
 
 			slideWidth = viewport.width();
 			if (options['horizontal']){
 				slideWidth -= options['tabWidth'];
 			}
-			
+
 			content.css('width', slides * (slideWidth + options['tabWidth']));
 			content.children('li').css('width', slideWidth);
-			
-			if (options['horizontal']){
-				tabs.css({ 'height' : '100%' });
-				tabs.children('li').css({
-					'height' : (100 / slides) + '%',
-					'width' : options['tabWidth']
-				});
-				if (options['tabs'] == 'left'){
-					content.children('li').css({
-						'margin-left' : options['tabWidth']
+	
+			if (options['tabs'] !== 'none'){
+				if (options['horizontal']){
+					tabs.css({ 'height' : '100%' });
+					tabs.children('li').css({
+						'height' : (100 / slides) + '%',
+						'width' : options['tabWidth']
 					});
+					if (options['tabs'] == 'left'){
+						content.children('li').css({
+							'margin-left' : options['tabWidth']
+						});
+					}
+					else {
+						content.children('li').css({
+							'margin-right' : options['tabWidth']
+						});
+					}
 				}
 				else {
-					content.children('li').css({
-						'margin-right' : options['tabWidth']
+					tabs.children('li').css({
+						'width' : (100 / slides) + '%',
+						'height' : options['tabHeight']
 					});
+					if (options['tabs'] == 'top'){
+						content.children('li').css({
+							'margin-top' : options['tabHeight'],
+						});
+					}
+					else {
+						content.children('li').css({
+							'margin-bottom' : options['tabHeight']
+						});
+					}
 				}
 			}
-			else {
-				tabs.children('li').css({
-					'width' : (100 / slides) + '%',
-					'height' : options['tabHeight']
-				});
-				if (options['tabs'] == 'top'){
-					content.children('li').css({
-						'margin-top' : options['tabHeight'],
-					});
-				}
-				else {
-					content.children('li').css({
-						'margin-bottom' : options['tabHeight']
-					});
-				}
-			}
-						
 			tabs.children('li').bind('click', onTabClicked).first().addClass('caroosel-active');
-			//viewport.bind('click', goToNext);
 			
 			if (parseInt(options['slideshow']) > 0){
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
@@ -104,7 +125,7 @@
 
 			slideHeight = maxY();
 			var sh = slideHeight;
-			if (!options['horizontal']){
+			if (!options['horizontal'] && !options['tabs'] == 'none'){
 				sh += options['tabHeight'];
 			}
 			caroosel.height(sh);
@@ -119,9 +140,6 @@
 						max_y = h;
 					}
 				});
-				if (options['tabs'] == 'top' || options['tabs'] == 'bottom'){
-					//~ max_y += options['tabHeight'];
-				}
 				return max_y;
 			}
 
@@ -142,41 +160,37 @@
 			}
 
 			function goTo(n){
-				var caption = getActiveSlide().find('.caroosel-caption');
-				//~ if (caption.length > 0){
-					//~ caption.fadeOut(doGoTo);
-				//~ }
-				//~ else {
-					doGoTo();
-				//~ }
+				doGoTo();
 				
 				function doGoTo(){
+					hook('beforeSlide');
+					
 					var listItems = tabs.children('li');
-					listItems.removeClass('caroosel-active');
-					$(listItems.get(n)).addClass('caroosel-active'); //.addClass('caroosel-active');
-					
 					var w = getActiveSlide().outerWidth(true);
-					
 					var newLeft = n * w * -1;
+
 					switch (options['animate']){
 						case 'slide':
-							content.animate({
-								'left' : newLeft
-							}, options['animationSpeed']);
+							content.animate({'left' : newLeft },
+								options['animationSpeed'],
+								setActive
+							);
 							break;
 						case 'fade':
-							content.fadeOut(options['animationSpeed'], function(){
+							var speed = options['animationSpeed'] / 2;
+							content.fadeOut(speed, function(){
 								content.css('left', newLeft);
-								content.fadeIn();
+								content.fadeIn(speed, setActive);
 							});
 							break;
-						case 'slideDown':
-							var curSlide = getActiveSlide();
-							curSlide.clone().prependTo(content).css('z-index', 20);
-							break;
-							
 						default:
 							break;
+					}
+
+					function setActive(){
+						listItems.removeClass('caroosel-active');
+						$(listItems.get(n)).addClass('caroosel-active');
+						hook('afterSlide');
 					}
 				}
 			}
@@ -202,39 +216,88 @@
 				var n = getActive();
 				return $(content.children('li')[n]);
 			}
-			
-			function findLargestY(){
-				var max = 0;
-				content.children().each(function(i, el){
-					h = $(el).outerHeight();
-					max = (h > max) ? h : max;
-				});
-				return max;
+		}
+	 
+		function option (key, val) {
+			if (val) {
+				options[key] = val;
 			}
-			
-			function findSmallestY(){
-				var min = 99999;
-				content.children().each(function(i, el){
-					h = $(el).outerHeight();
-					min = (h < min) ? h : min;
-				});
-				return min ;
+			else {
+				return options[key];
 			}
-				
-		});
+		}
+ 
+		function destroy() {
+			$el.each(function() {
+				var el = this;
+				var $el = $(this);
+		 
+				window.clearTimeout(timeOut);
+				$el.prev('.caroosel').remove();
+				$el.show();
+				hook('onDestroy');
+				// Remove Plugin instance from the element.
+				$el.removeData('plugin_' + pluginName);
+			});
+		}
+	 
+		function hook(hookName) {
+			if (options[hookName] !== undefined) {
+				options[hookName].call(el);
+			}
+		}
+	 
+		init();
+	 
+		return {
+			'option' : option,
+			'destroy' : destroy
+		};
 	}
-	
-	/*
-	 *  Default options
-	 *================================
+ 
+	/**
+	 * Plugin definition.
 	 */
-	$.fn.caroosel.defaults = {
+	$.fn[pluginName] = function(options) {
+		if (typeof arguments[0] === 'string') {
+			var methodName = arguments[0];
+			var args = Array.prototype.slice.call(arguments, 1);
+			var returnVal;
+			this.each(function() {
+				// Check that the element has a plugin instance, and that
+				// the requested public method exists.
+				if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
+					// Call the method of the Plugin instance, and Pass it
+					// the supplied arguments.
+					returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
+				}
+				else {
+					throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
+				}
+			});
+			
+			return (returnVal !== undefined) ? returnVal : this;
+		}
+		else if (typeof options === "object" || !options) {
+			return this.each(function() {
+				if (!$.data(this, 'plugin_' + pluginName)) {
+					$.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+				}
+			});
+		}
+	};
+ 
+	// Default plugin options.
+	$.fn[pluginName].defaults = {
 		'tabs' : 'left',
 		'tabWidth' : 160,
 		'tabHeight' : 40,
 		'animate' : 'slide',
 		'animationSpeed' : 400,
-		'slideshow' : false
+		'slideshow' : false,
+		onInit: function() {},
+		onDestroy: function() {},
+		beforeSlide : function(n) {},
+		afterSlide : function(n) {}
 	};
-	
 })(jQuery);

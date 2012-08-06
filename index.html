@@ -11,7 +11,7 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>Welcome to Foundation</title>
+  <title>Caroosel</title>
 
   <!-- Included CSS Files -->
   <link rel="stylesheet" href="css/foundation.css">
@@ -29,7 +29,7 @@
 <body>
 	<div class="row">
 		<div class="twelve columns">
-			<h2>Welcome to jquery.caroosel</h2>
+			<h2>Welcome to Caroosel</h2>
 			<h3 class="subheader">A fancy carousel slider</h3>
 		</div>
 	</div>
@@ -83,32 +83,38 @@
 		</div>
 		<div class="four columns">
 			<div class="panel rounded">
-				<h4>Caroosel</h4>
 				<form>
 					<label for="tabs">Tab position</label>
 					<select id="tabs">
-						<option>left</option>
+						<option>none</option>
+						<option selected>left</option>
 						<option>right</option>
 						<option>top</option>
 						<option>bottom</option>
 					</select>
 					<label for="tab-width">Tab width</label>
-					<input id="tab-width" />
+					<input type="number" id="tab-width" value="160" />
 					<label for="tab-height">Tab height</label>
-					<input id="tab-height" />
+					<input type="number" id="tab-height" value="40" />
 					<label for="animate">Animate</label>
 					<select id="animate">
 						<option>fade</option>
-						<option>slide</option>
+						<option selected>slide</option>
 					</select>
 					<label for="animation-speed">Animation speed</label>
-					<input id="animation-speed" />
+					<input type="number" id="animation-speed" value="400" />
 					<label for="slideshow">Slideshow</label>
+					<input type="number" value="0" id="slideshow" />
+					<p><small>0=no slideshow, number=millliseconds between slide change</small></p>
 
 					
 					
 					<input type="submit" class="medium success button" />
 				</form>
+				<hr>
+				<a id="destroyer" href="#" class="large radius alert button">Seek & Destroy</a>
+				<a id="slider" href="#" class="medium radius secondary button">Slider</a>
+				<a id="fader" href="#" class="medium radius secondary button">Fader</a>
 			</div>
 		</div>
 	</div>

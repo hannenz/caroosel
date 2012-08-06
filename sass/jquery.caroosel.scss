@@ -202,4 +202,23 @@ div.caroosel.tabs-bottom {
 	}
 }
 
+div.caroosel.tabs-none {
+	ul.caroosel-tabs {
+		display:none;
+	}
 
+	div.caroosel-viewport {
+	
+		ul.caroosel-content {
+
+			width:100%;
+			margin:0;
+			
+			> li {
+				width:100%;
+				margin:0;
+				background:orange;
+			}
+		}
+	}
+}
