@@ -17,6 +17,7 @@
  * </div>
  */
 
+
 @mixin triangle($pos:right,$color:blue, $sizex:5px, $sizey:5px) {
 	content:'';
 	width:0;
