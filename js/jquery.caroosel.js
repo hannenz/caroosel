@@ -19,6 +19,7 @@
 		var el = element;
 		var $el = $(element);
 		var timeOut;	// Reference to timeout handle
+		var caroosel, tabs, viewport, content, prev, next, slides, slideWidth, slideHeight;
  
 		options = $.extend({}, $.fn[pluginName].defaults, options);
  
@@ -28,16 +29,17 @@
 		}
 		
 		function _caroosel(){
+			console.log('init');
 
-			var caroosel = $('<div class="caroosel" />');
-			var tabs = $('<ul class="caroosel-tabs" />');
-			var viewport = $('<div class="caroosel-viewport"></div>');
-			var content = $('<ul class="caroosel-content" />');
-			var prev = $('<a href="#" class="caroosel-navlink" id="caroosel-prev" />');
-			var next = $('<a href="#" class="caroosel-navlink" id="caroosel-next" />');
-			var slides = $el.find('dd').length;
-			var slideWidth;
-			var slideHeight;
+			caroosel = $('<div class="caroosel" />');
+			tabs = $('<ul class="caroosel-tabs" />');
+			viewport = $('<div class="caroosel-viewport"></div>');
+			content = $('<ul class="caroosel-content" />');
+			prev = $('<a href="#" class="caroosel-navlink" id="caroosel-prev" />');
+			next = $('<a href="#" class="caroosel-navlink" id="caroosel-next" />');
+			slides = $el.find('dd').length;
+			slideWidth;
+			slideHeight;
 			
 			options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
 			
@@ -71,6 +73,7 @@
 			
 			$el.hide();
 			caroosel.insertBefore($el);
+			console.log('ok-...?!');
 
 			slideWidth = viewport.width();
 			if (options['horizontal']){
@@ -158,49 +161,53 @@
 				if (options['tabs'] == 'right'){
 					next.css('right', options['tabWidth']);
 				}
-				
 			}
-
-
 			return;
+		}
 
-			function maxY(){
-				var max_y = 0;
-				$('ul.caroosel-content > li').each(function(i, el){
-					var h = $(el).outerHeight();
-					if (h > max_y){
-						max_y = h;
-					}
-				});
-				return max_y;
-			}
+		function maxY(){
+			var max_y = 0;
+			$('ul.caroosel-content > li').each(function(i, el){
+				var h = $(el).outerHeight();
+				if (h > max_y){
+					max_y = h;
+				}
+			});
+			return max_y;
+		}
 
-			function slideshow(){
-				goToNext();
+		function slideshow(){
+			goToNext();
+			timeOut = window.setTimeout(slideshow, options['slideshow']);
+		}
+			
+		function onTabClicked(e){
+			var n = $(this).index();
+
+			// Reset the slideshow timeout
+			window.clearTimeout(timeOut);
+			if (parseInt(options['slideshow']) > 0){
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
 			}
-				
-			function onTabClicked(e){
-				var n = $(this).index();
+			goTo(n);
+		}
 
-				// Reset the slideshow timeout
-				window.clearTimeout(timeOut);
-				if (parseInt(options['slideshow']) > 0){
-					timeOut = window.setTimeout(slideshow, options['slideshow']);
+		function goTo(n){
+			doGoTo();
+			
+			function doGoTo(){
+				hook('beforeSlide', n);
+				
+				var listItems = tabs.children('li');
+				var w = getActiveSlide().outerWidth(true);
+				var newLeft = n * w * -1;
+				
+				if (typeof(options['animate']) == 'function'){
+					options['animate'].call(el, n, content, newLeft, options['animationSpeed']);
+					setActive();
 				}
-				goTo(n);
-			}
-
-			function goTo(n){
-				doGoTo();
-				
-				function doGoTo(){
-					hook('beforeSlide');
-					
-					var listItems = tabs.children('li');
-					var w = getActiveSlide().outerWidth(true);
-					var newLeft = n * w * -1;
-
+				else {
+	
 					switch (options['animate']){
 						case 'slide':
 							content.animate({'left' : newLeft },
@@ -218,46 +225,48 @@
 						default:
 							break;
 					}
+				}
 
-					function setActive(){
-						listItems.removeClass('caroosel-active');
-						$(listItems.get(n)).addClass('caroosel-active');
-						content.children('li').removeClass('caroosel-active');
-						$(content.children('li').get(n)).addClass('caroosel-active');
-						hook('afterSlide');
-					}
+				function setActive(){
+					listItems.removeClass('caroosel-active');
+					$(listItems.get(n)).addClass('caroosel-active');
+					content.children('li').removeClass('caroosel-active');
+					$(content.children('li').get(n)).addClass('caroosel-active');
+
+					hook('afterSlide', n);
 				}
-			}
-			
-			function goToNext(){
-				var current = content.find('li.caroosel-active').index();
-				if (++current == slides){
-					current = 0;
-				}
-				goTo(current);
-			}
-			function goToPrev(){
-				var current = content.find('li.caroosel-active').index();
-				if (current-- == 0){
-					current = slides - 1;
-				}
-				goTo(current);
-			}
-			
-			function getActive(){
-				return tabs.find('li.caroosel-active').index();
-			}
-			
-			function getActiveTab(){
-				var n = getActive();
-				return $(tabs.children('li')[n]);
-			}
-			
-			function getActiveSlide(){
-				var n = getActive();
-				return $(content.children('li')[n]);
 			}
 		}
+		
+		function goToNext(){
+			var current = content.find('li.caroosel-active').index();
+			if (++current == slides){
+				current = 0;
+			}
+			goTo(current);
+		}
+		function goToPrev(){
+			var current = content.find('li.caroosel-active').index();
+			if (current-- == 0){
+				current = slides - 1;
+			}
+			goTo(current);
+		}
+		
+		function getActive(){
+			return tabs.find('li.caroosel-active').index();
+		}
+		
+		function getActiveTab(){
+			var n = getActive();
+			return $(tabs.children('li')[n]);
+		}
+		
+		function getActiveSlide(){
+			var n = getActive();
+			return $(content.children('li')[n]);
+		}
+		
 	 
 		function option (key, val) {
 			if (val) {
@@ -281,10 +290,11 @@
 				$el.removeData('plugin_' + pluginName);
 			});
 		}
-	 
-		function hook(hookName) {
+		
+		function hook(hookName, arg) {
+			if (typeof(arg) !== 'array'){ arg = [ arg ]; }
 			if (options[hookName] !== undefined) {
-				options[hookName].call(el);
+				options[hookName].apply(el, arg);
 			}
 		}
 	 
@@ -292,7 +302,8 @@
 	 
 		return {
 			'option' : option,
-			'destroy' : destroy
+			'destroy' : destroy,
+			'goTo' : goTo
 		};
 	}
  
@@ -338,7 +349,7 @@
 		
 		onInit: function() {},
 		onDestroy: function() {},
-		beforeSlide : function(n) {},
-		afterSlide : function(n) {}
+		beforeSlide : function() {},
+		afterSlide : function() {}
 	};
 })(jQuery);

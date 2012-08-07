@@ -26,6 +26,7 @@
 				'tabWidth' : parseInt($('#tab-width').val()),
 				'tabHeight' : parseInt($('#tab-height').val()),
 				'slideshow' : parseInt($('#slideshow').val()),
+				'navlinks' : ($('#navlinks').attr('checked') == 'checked'),
 				'onInit' : function(){ console.log('Plugin has been initialized') }
 			};
 			$('.slider').caroosel('destroy');
@@ -35,7 +36,22 @@
 	
 		$('.slider').caroosel({
 			'tabs' : 'top',
-			'navlinks' : true
+			'navlinks' : true,
+			'beforeSlide' : function(n){
+				console.log('Going to move to slide #'+n);
+			},
+			'afterSlide' : function(n){
+				console.log('Arrived at slide #'+n);
+			},
+			'animate' : function(n, content, newLeft, speed){
+				var paddingTop = content.css('padding-top');
+				var newPadding = '600px';
+				
+				$(content).animate({'padding-top' : newPadding}, speed/2, function(){
+					$(content).css('left', newLeft);
+					$(content).animate({'padding-top' : paddingTop}, speed/2);
+				});
+			}
 		});
 		
 		$('#destroyer').bind('click', function(e){
@@ -51,6 +67,13 @@
 		$('#fader').bind('click', function(e){
 			e.preventDefault();
 			$('.slider').caroosel('option', 'animate', 'fade');
+			return false;
+		});
+		
+		$('#extlinks a').bind('click', function(e){
+			e.preventDefault();
+			var n = parseInt($(this).html()) - 1;
+			$('.slider').caroosel('goTo', n);
 			return false;
 		});
 	});
