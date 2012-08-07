@@ -62,7 +62,7 @@ div.caroosel {
       div.caroosel div.caroosel-viewport ul.caroosel-content > li {
         list-style-type: none;
         margin: 0;
-        padding: 10px;
+        padding: 0;
         float: left;
         position: relative; }
         div.caroosel div.caroosel-viewport ul.caroosel-content > li div.caroosel-caption {

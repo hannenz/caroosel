@@ -26,5 +26,35 @@
    Page Name 2
 ----------------------------------------- */
 
+#caroosel-gallery img {
+	width:100%;
+	max-width:100%;
+}
+
+#gallery-thumbs a {
+	display:block;
+	float:left;
+	margin:0 10px 0 0;	
+}
+
+footer {
+	background:#333;
+	color:#fff;
+	padding:6em 0 12em 0;
+	margin:6em 0 0 0;
+}
+
+pre {
+	background:#ccc;
+	padding:10px;
+}
 
 
+code {
+	background:#eee;
+	font-size:11px;
+}
+
+pre code {
+	background:transparent;
+}

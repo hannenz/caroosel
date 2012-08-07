@@ -1,41 +1,35 @@
-# caroosel
+## Caroosel
 
-A jQquery carousel plugin, either with tabs or standard slider with navigation links (or even both ;))
+A jQuery carousel plugin, either with tabs or standard slider with navigation links (or even both ;))
 
-## Quick usage
+### Quick usage
 
-### Include jquery, plugin and the plugin's stylesheet:
+#### Include jquery, plugin and the plugin's stylesheet:
 
-~~~
-<link rel="stylesheet" type="text/css" href="/path/to/jquery.caroosel.js">
-<script src="/path/to/jquery.min.js"></script>
-<script src="/path/to/jquery.caroosel.js"></script>
-~~~
+	<link rel="stylesheet" type="text/css" href="/path/to/jquery.caroosel.js">
+	<script src="/path/to/jquery.min.js"></script>
+	<script src="/path/to/jquery.caroosel.js"></script>
 
-### Markup
+#### Markup
 
-~~~
-<dl class="thisone">
-	<dt>First tab (No block level HTML, sorry...)</dt>
-	<dd>
-		Content of first tab, can contain any HTML
-		<div class="caroosel-caption">An optional caption</div>
-	</dd>
-</dl>
-~~~
+	<dl class="thisone">
+		<dt>First tab (No block level HTML, sorry...)</dt>
+		<dd>
+			Content of first tab, can contain any HTML
+			<div class="caroosel-caption">An optional caption</div>
+		</dd>
+	</dl>
 
-### Call caroosel
+#### Call caroosel
 
-~~~
-<script>
-$(document).ready(function(){
-	var options = {  ...  }
-	$('#thisone').caroosel(options);
-});
-</script>
-~~~
+	<script>
+	$(document).ready(function(){
+		var options = {  ...  }
+		$('#thisone').caroosel(options);
+	});
+	</script>
 
-### Options
+#### Options
 
 tabs
 :	string 'left', 'right', 'top', 'bottom' or 'none': Where to place the tabs (default: left)
@@ -76,17 +70,26 @@ beforeSlide
 afterSlide
 :	function	callback function being called after advancing to another slide
 
+#### Plugin methods
 
-
-### Plugin methods
-
-~~~
-// Set an option at runtime
-$('selector').caroosel('option', 'key', value);
-
-// Get an option at runtime
-var v = $('selector').caroosel('option', 'key');
-
-// Destroy plugin instance
-$('selector').caroosel('destroy')
+	// Set an option at runtime
+	$(selector).caroosel('option', 'key', value);
+	
+	// Get an option at runtime
+	var v = $('selector').caroosel('option', 'key');
+	
+	// Destroy plugin instance
+	$(selector).caroosel('destroy')
+	
+	// Go to nth slide
+	$(selector).caroosel('goTo', n);
+	
+	// Go to next slide
+	$(selector).caroosel('goToNext');
+	
+	// Go to previous slide
+	$(selector).caroosel('goToPrev');
+	
+	// Get the active slide 
+	var el = $(selector).caroosel('getActiveSlide');
 

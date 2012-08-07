@@ -29,8 +29,8 @@
 <body>
 	<div class="row">
 		<div class="twelve columns">
-			<h2>Welcome to Caroosel</h2>
-			<h3 class="subheader">A fancy carousel slider</h3>
+			<h1>Welcome to Caroosel</h1>
+			<h2 class="subheader">A fancy carousel slider</h2>
 		</div>
 	</div>
 	<div class="row">
@@ -80,9 +80,39 @@
 					<div class="caroosel-caption">A nice cartoon about the dangers of smoking</div>
 				</dd-->
 			</dl>
+			<h2>How about a simple slideshow...?</h2>
+			<div class="row">
+				<div class="ten columns">
+					<dl id="gallery">
+						<dd><img src="images/gallery/resized.jpg" alt="" /></dd>
+						<dd><img src="images/gallery/sample-1.jpg" alt="" /></dd>
+						<dd><img src="images/gallery/sample-3.jpg" alt="" /></dd>
+						<dd><img src="images/gallery/sample-4.jpg" alt="" /></dd>
+					</dl>
+					<div id="gallery-thumbs">
+						<a href="#"><img src="images/gallery/thumbs/resized.jpg" alt="" /></a>
+						<a href="#"><img src="images/gallery/thumbs/sample-1.jpg" alt="" /></a>
+						<a href="#"><img src="images/gallery/thumbs/sample-3.jpg" alt="" /></a>
+						<a href="#"><img src="images/gallery/thumbs/sample-4.jpg" alt="" /></a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<h2>You see&hellip;</h2>
+				<div class="twelve columns">
+					<p>&hellip;it's easy to do all kinds of cool things with caroosel, just use the provided API (plugin methods, callbacks etc.)</p>
+					<p>Read the <a id="doclink" href="#doc">documentatin</a> to learn more about all this stuff</p>
+				</div>
+			</div>
+			<div class="row">
+				<h2>Documentation</h2>
+				<div id="doc" class="twelve columns">
+				</div>
+			</div>
 		</div>
 		<div class="four columns">
 			<div class="panel rounded">
+				<h5>Options (some of them)</h5>
 				<form>
 					<label for="tabs">Tab position</label>
 					<select id="tabs">
@@ -108,27 +138,65 @@
 					<p><small>0=no slideshow, number=millliseconds between slide change</small></p>
 					<label for="navlinks">Navigation links</label>
 					<input type="checkbox" id="navlinks" />
-					
+						
 					<br>
-					<input type="submit" class="medium success button" />
+					<input type="submit" value="Customize" class="medium success button" />
 				</form>
+
 				<hr>
-				<a id="destroyer" href="#" class="large radius alert button">Seek & Destroy</a>
-				<a id="slider" href="#" class="medium radius secondary button">Slider</a>
-				<a id="fader" href="#" class="medium radius secondary button">Fader</a>
-				<hr>
-				<div id="extlinks" class="buttongroup">
+				<h5>External links to caroosel</h5>
+				<p>(goToPrev, goTo, goToNext)</p>
+				<div id="extlinks" class="button-group">
+					<a href="#" class="small radius button">prev</a>
 					<a href="#" class="small radius button">1</a>
 					<a href="#" class="small radius button">2</a>
 					<a href="#" class="small radius button">3</a>
+					<a href="#" class="small radius button">next</a>
 				</div>
+
+				<hr>
+				<h5>Set and get options at runtime</h5>
+				<a id="slider" href="#" class="small radius secondary button">Slide</a>
+				<a id="fader" href="#" class="small radius secondary button">Fade</a>
+				<a id="getter" href="#" class="small radius secondary button">What is it?</a>
+
+				<hr>
+				<h5>Destroy the plugin instance</h5>
+				<a id="destroyer" href="#" class="large radius alert button">Seek & Destroy</a>
 			</div>
 		</div>
 	</div>
+	<footer>
+		<div class="row">
+			<div class="four columns">
+				<h5>Credits</h5>
+				Caroosel &copy;2012 Johannes Braun<br>
+				<a href="mailto:j.braun@agentur-halma.de">j.braun@agentur-halma.de</a>
+				<hr>
+				The plugin code has been built upon the fabulous <a href="http://f6design.com/journal/2012/05/06/a-jquery-plugin-boilerplate/">jquery plugin boilerplate</a> by Jonathan Nicol @f6design.
+				<hr>
+				This demo site was built using the great <a href="http://zurb.foundation.com">Foundation</a> Framework by ZURB.
+			</div>
+			<div class="four columns">
+				<h5>Github</h5>
+				<p>Caroosel can be found <a href="http://github.com/hannenz/caroosel" target="_blank">on GitGHub</a> as well</p>
+				
+			</div>
+			<div class="four columns">
+				<h5>Share</h5>
+				<ul>
+					<li><a href="#">Tweet about it</a></li>
+					<li><a href="#">Share on Google+</a></li>
+					<li><a href="#">Share on Facebook</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
 	
 	<!-- Included JS Files (Compressed) -->
 	<script src="js/foundation.js"></script>
 	<script src="js/jquery.caroosel.js"></script>
+	<script src="js/Markdown.Converter.js"></script>
 	
 	<!-- Initialize JS Plugins -->
 	<script src="js/app.js"></script>

@@ -5,8 +5,7 @@
  * 
  * @author: <j.braun@agentur-halma.de>
  * 
- * based upon: "A jQuery plugin boilerplate." by Jonathan Nicol @f6design
- * 
+ * Plugin based upon: "A jQuery plugin boilerplate." by Jonathan Nicol @f6design
  */
 
 ;(function($) {
@@ -18,19 +17,11 @@
 	function Plugin(element, options) {
 		var el = element;
 		var $el = $(element);
-		var timeOut;	// Reference to timeout handle
-		var caroosel, tabs, viewport, content, prev, next, slides, slideWidth, slideHeight;
+		var caroosel, tabs, viewport, content, prev, next, slides, slideWidth, slideHeight, timeOut;
  
 		options = $.extend({}, $.fn[pluginName].defaults, options);
  
 		function init() {
-			_caroosel();
-			hook('onInit');
-		}
-		
-		function _caroosel(){
-			console.log('init');
-
 			caroosel = $('<div class="caroosel" />');
 			tabs = $('<ul class="caroosel-tabs" />');
 			viewport = $('<div class="caroosel-viewport"></div>');
@@ -38,8 +29,11 @@
 			prev = $('<a href="#" class="caroosel-navlink" id="caroosel-prev" />');
 			next = $('<a href="#" class="caroosel-navlink" id="caroosel-next" />');
 			slides = $el.find('dd').length;
-			slideWidth;
-			slideHeight;
+			var domId = $el.attr('id');
+			if (domId){
+				caroosel.attr('id', 'caroosel-'+domId);
+			}
+				
 			
 			options['horizontal'] = (options['tabs'] == 'left' || options['tabs'] == 'right');
 			
@@ -73,7 +67,6 @@
 			
 			$el.hide();
 			caroosel.insertBefore($el);
-			console.log('ok-...?!');
 
 			slideWidth = viewport.width();
 			if (options['horizontal']){
@@ -119,7 +112,7 @@
 				}
 			}
 			tabs.children('li').bind('click', onTabClicked).first().addClass('caroosel-active');
-			content.children('li').first().addClass('caroosel-active');
+			content.children('li').css('padding', options['slidePadding']).first().addClass('caroosel-active');
 			
 			if (parseInt(options['slideshow']) > 0){
 				timeOut = window.setTimeout(slideshow, options['slideshow']);
@@ -162,12 +155,14 @@
 					next.css('right', options['tabWidth']);
 				}
 			}
+			
+			hook('onInit');
 			return;
 		}
 
 		function maxY(){
 			var max_y = 0;
-			$('ul.caroosel-content > li').each(function(i, el){
+			content.children('li').each(function(i, el){
 				var h = $(el).outerHeight();
 				if (h > max_y){
 					max_y = h;
@@ -253,20 +248,13 @@
 			goTo(current);
 		}
 		
-		function getActive(){
-			return tabs.find('li.caroosel-active').index();
-		}
-		
-		function getActiveTab(){
-			var n = getActive();
-			return $(tabs.children('li')[n]);
-		}
-		
 		function getActiveSlide(){
-			var n = getActive();
-			return $(content.children('li')[n]);
+			return content.children('li.caroosel-active');
 		}
 		
+		function getActiveN(){
+			return content.children('li.caroosel-active').index();
+		}
 	 
 		function option (key, val) {
 			if (val) {
@@ -292,9 +280,8 @@
 		}
 		
 		function hook(hookName, arg) {
-			if (typeof(arg) !== 'array'){ arg = [ arg ]; }
 			if (options[hookName] !== undefined) {
-				options[hookName].apply(el, arg);
+				options[hookName].call(el, arg);
 			}
 		}
 	 
@@ -303,13 +290,14 @@
 		return {
 			'option' : option,
 			'destroy' : destroy,
-			'goTo' : goTo
+			'goTo' : goTo,
+			'goToPrev' : goToPrev,
+			'goToNext' : goToNext,
+			'getActiveSlide' : getActiveSlide,
+			'getActiveN' : getActiveN
 		};
 	}
  
-	/**
-	 * Plugin definition.
-	 */
 	$.fn[pluginName] = function(options) {
 		if (typeof arguments[0] === 'string') {
 			var methodName = arguments[0];
@@ -319,9 +307,6 @@
 				if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
 					returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
 				}
-				//~ else {
-					//~ throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
-				//~ }
 			});
 			
 			return (returnVal !== undefined) ? returnVal : this;
@@ -335,7 +320,6 @@
 		}
 	};
  
-	// Default plugin options.
 	$.fn[pluginName].defaults = {
 		'tabs' : 'left',
 		'tabWidth' : 160,
@@ -344,9 +328,9 @@
 		'animationSpeed' : 400,
 		'slideshow' : false,
 		'navlinks' : true,
-		'prev' : '<<',
-		'next' : '>>',
-		
+		'prev' : '&laquo;',
+		'next' : '&raquo;',
+		'slidePadding' : '10px 10px 10px 10px',
 		onInit: function() {},
 		onDestroy: function() {},
 		beforeSlide : function() {},
