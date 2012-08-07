@@ -101,7 +101,7 @@
 					});
 					if (options['tabs'] == 'top'){
 						content.children('li').css({
-							'margin-top' : options['tabHeight'],
+							'margin-top' : options['tabHeight']
 						});
 					}
 					else {

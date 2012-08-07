@@ -37,7 +37,7 @@ div.caroosel {
       list-style-type: none;
       margin: 0;
       padding: 1em;
-      background: black;
+      background: #8ed3e7;
       background: rgba(0, 0, 0, 0.6);
       color: #fff;
       cursor: pointer;
