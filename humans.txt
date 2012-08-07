@@ -1,8 +1,7 @@
-/* Foundation was made by ZURB, an interaction design and design strategy firm in Campbell, CA */
-/* zurb.com */
+/* Caroosel was made by Agentur Halma, an communication and design agency in Ulm, Germany */
+/* agentur-halma.de */
 /* humanstxt.org */
 
-/* SITE */
-  Standards: HTML5, CSS3
-  Components: jQuery, Orbit, Reveal
-  Software: Coda, Textmate, Git
+Johannes Braun <j.braun@agentur-halma.de>
+
+
